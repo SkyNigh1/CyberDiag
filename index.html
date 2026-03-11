@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberDiag — Audit de sécurité système & réseaux Linux</title>
+  <meta name="description"
+    content="CyberDiag réalise des audits de sécurité système et réseaux Linux pour les entreprises. Développé par l'équipe Dyvine, étudiants en informatique à l'UBS.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- GSAP + Lenis via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js" defer></script>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+
+  <!-- ============ PRELOADER / INTRO ANIMATION ============ -->
+  <div id="preloader">
+    <div class="preloader-content">
+      <img id="preloader-logo" src="assets/logo/logo.png" alt="CyberDiag Logo">
+      <span id="preloader-name">CyberDiag</span>
+    </div>
+  </div>
+
+  <!-- ============ HEADBAR (hidden by default, shows on scroll-up) ============ -->
+  <nav id="headbar">
+    <div class="headbar-left">
+      <img src="assets/logo/logo.png" alt="CyberDiag" class="headbar-logo">
+      <span class="headbar-name">CyberDiag</span>
+    </div>
+    <div class="headbar-right">
+      <button id="lang-toggle" class="btn-lang" aria-label="Switch language">
+        <span class="lang-label">FR to EN</span>
+      </button>
+      <a href="#download" class="btn-download-nav"><span data-i18n="nav_download">TÉLÉCHARGER</span></a>
+    </div>
+  </nav>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main id="site-content">
+
+    <!-- ——— HEADER / HERO ——— -->
+    <section id="header" class="hero-section">
+      <div class="hero-frame">
+
+        <!-- 3D Logo inside the frame, overflows bottom freely -->
+        <div class="hero-logo-wrapper">
+          <img src="assets/logo/3dlogo.avif" alt="CyberDiag 3D Logo" class="hero-3d-logo">
+        </div>
+
+        <!-- Text content on the left -->
+        <div class="hero-text">
+          <p class="hero-overtitle" data-i18n="hero_overtitle">( Développé par l'équipe Dyvine )</p>
+          <h1 class="hero-title" data-i18n="hero_title">AUDITEZ,<br>MAÎTRISEZ.</h1>
+          <p class="hero-description" data-i18n="hero_description">
+            CyberDiag analyse et audite la sécurité de vos systèmes et réseaux Linux,
+            pour vous offrir une vision claire de vos vulnérabilités.
+          </p>
+          <div class="hero-buttons">
+            <a href="#download" class="btn-primary">
+              <span data-i18n="hero_btn_download">TÉLÉCHARGER</span>
+              <span class="btn-arrow">🡥</span>
+            </a>
+            <a href="#faq" class="btn-secondary">
+              <span data-i18n="hero_btn_faq">QUESTIONS FRÉQUENTES</span>
+              <span class="btn-arrow">🡥</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom-left: scroll indicator -->
+        <div class="hero-scroll-indicator">
+          <span data-i18n="hero_scroll">Défiler pour découvrir</span>
+          <span class="hero-scroll-arrow">↓</span>
+        </div>
+
+        <!-- Bottom-right: UBS logo -->
+        <div class="hero-year">
+          <img src="assets/logo/logo ubs.png" alt="UBS" class="hero-ubs-logo">
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— HERO TAGLINE ——— -->
+    <div class="hero-tagline">
+      <span data-i18n="hero_tagline">( Notre priorité 🢆 )</span>
+    </div>
+
+    <!-- ——— MARQUEE BAND ——— -->
+    <section class="marquee-band">
+      <div class="marquee-track">
+        <span class="marquee-text" data-i18n="marquee_text">SÉCURISEZ VOS SYSTÈMES <span class="marquee-dot">🞼</span>
+          AUDITEZ VOS RÉSEAUX <span class="marquee-dot">🞼</span> PROTÉGEZ VOS DONNÉES <span
+            class="marquee-dot">🞼</span> SÉCURISEZ VOS
+          SYSTÈMES <span class="marquee-dot">🞼</span> AUDITEZ VOS RÉSEAUX <span class="marquee-dot">🞼</span> PROTÉGEZ
+          VOS DONNÉES <span class="marquee-dot">🞼</span>&nbsp;</span>
+        <span class="marquee-text" data-i18n="marquee_text">SÉCURISEZ VOS SYSTÈMES <span class="marquee-dot">🞼</span>
+          AUDITEZ VOS RÉSEAUX <span class="marquee-dot">🞼</span> PROTÉGEZ VOS DONNÉES <span
+            class="marquee-dot">🞼</span> SÉCURISEZ VOS
+          SYSTÈMES <span class="marquee-dot">🞼</span> AUDITEZ VOS RÉSEAUX <span class="marquee-dot">🞼</span> PROTÉGEZ
+          VOS DONNÉES <span class="marquee-dot">🞼</span>&nbsp;</span>
+      </div>
+    </section>
+
+    <!-- ——— DÉCOUVERTE ——— -->
+    <section id="discover" class="section discover-section">
+      <div class="section-inner">
+        <h2 class="section-title discover-title" data-i18n="discover_title">EXPLOREZ<br>CYBERDIAG.</h2>
+      </div>
+      <div class="discover-grid">
+        <!-- Left column — 2/3 width, video + dim/grain + overlay -->
+        <div class="discover-left">
+          <video class="discover-video" src="assets/video/mockup.mp4" autoplay loop muted playsinline></video>
+          <div class="video-dim"></div>
+          <div class="video-grain-layer"></div>
+          <div class="discover-overlay">
+            <span class="discover-name">CyberDiag</span>
+            <p class="discover-desc" data-i18n="discover_desc">Un audit système &amp; réseau, lisible par tous.<br>Du
+              comptable au pentester — une
+              sortie adaptée à chaque profil, un mode expert pour aller plus loin.</p>
+            <span class="discover-accent">🞼</span>
+          </div>
+        </div>
+        <!-- Right column — square, animation iframe -->
+        <div class="discover-right">
+          <div class="window-chrome">
+            <div class="window-titlebar">
+              <div class="window-dots">
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+              </div>
+              <span class="window-title">CyberDiag</span>
+            </div>
+            <div class="window-body">
+              <iframe class="discover-animation" src="assets/video/animation.html" frameborder="0"
+                allowtransparency="true"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— FONCTIONNALITÉS ——— -->
+    <section id="features" class="section features-section">
+      <div class="section-inner">
+        <h2 class="section-title features-title" data-i18n="features_title">FONCTIONNALITÉS</h2>
+        <p class="features-subtitle" data-i18n="features_subtitle">Découvrez tout ce que CyberDiag peut faire pour vous.
+        </p>
+      </div>
+
+      <div class="features-selector">
+        <button class="feature-tab active" data-index="0" data-i18n="tab_modules">Modules</button>
+        <button class="feature-tab" data-index="1" data-i18n="tab_history">Historique</button>
+        <button class="feature-tab" data-index="2" data-i18n="tab_results">Résultats</button>
+        <button class="feature-tab" data-index="3" data-i18n="tab_questions">Questionnaire</button>
+        <button class="feature-tab" data-index="4" data-i18n="tab_levels">Niveaux</button>
+      </div>
+
+      <div class="features-carousel">
+        <div class="features-track">
+          <div class="feature-card" data-index="0" data-i18n-title="feature_1_title" data-i18n-desc="feature_1_desc">
+            <span class="feature-card-badge" data-i18n="feature_badge">inclus dans l'app</span>
+            <span class="feature-card-dot">🞼</span>
+            <h3 class="feature-card-title">Deux modes d'utilisation</h3>
+            <p class="feature-card-desc">Des modules séparés pour les analyses système et réseau, adaptés à chaque
+              profil.</p>
+            <div class="feature-card-img-wrap">
+              <img src="assets/screens/home.png" alt="Interface" class="feature-card-img">
+            </div>
+          </div>
+          <div class="feature-card" data-index="1" data-i18n-title="feature_2_title" data-i18n-desc="feature_2_desc">
+            <span class="feature-card-badge" data-i18n="feature_badge">inclus dans l'app</span>
+            <span class="feature-card-dot">🞼</span>
+            <h3 class="feature-card-title">Historique</h3>
+            <p class="feature-card-desc">Retrouvez l'historique complet de vos analyses passées en un coup d'œil.</p>
+            <div class="feature-card-img-wrap">
+              <img src="assets/screens/history.png" alt="Historique" class="feature-card-img">
+            </div>
+          </div>
+          <div class="feature-card" data-index="2" data-i18n-title="feature_3_title" data-i18n-desc="feature_3_desc">
+            <span class="feature-card-badge" data-i18n="feature_badge">inclus dans l'app</span>
+            <span class="feature-card-dot">🞼</span>
+            <h3 class="feature-card-title">Résultats détaillés</h3>
+            <p class="feature-card-desc">Des résultats détaillés et exportables en HTML pour partager vos audits
+              facilement.</p>
+            <div class="feature-card-img-wrap">
+              <img src="assets/screens/results.png" alt="Résultats" class="feature-card-img">
+            </div>
+          </div>
+          <div class="feature-card" data-index="3" data-i18n-title="feature_4_title" data-i18n-desc="feature_4_desc">
+            <span class="feature-card-badge" data-i18n="feature_badge">inclus dans l'app</span>
+            <span class="feature-card-dot">🞼</span>
+            <h3 class="feature-card-title">Questionnaire</h3>
+            <p class="feature-card-desc">Un questionnaire pour adapter le niveau des résultats et obtenir un profil
+              personnalisé.</p>
+            <div class="feature-card-img-wrap">
+              <img src="assets/screens/questions.png" alt="Questionnaire" class="feature-card-img">
+            </div>
+          </div>
+          <div class="feature-card" data-index="4" data-i18n-title="feature_5_title" data-i18n-desc="feature_5_desc">
+            <span class="feature-card-badge" data-i18n="feature_badge">inclus dans l'app</span>
+            <span class="feature-card-dot">🞼</span>
+            <h3 class="feature-card-title">Niveaux de scans</h3>
+            <p class="feature-card-desc">Différents niveaux de scans pour être toujours au même niveau que
+              l'utilisateur.</p>
+            <div class="feature-card-img-wrap">
+              <img src="assets/screens/level.png" alt="Niveaux" class="feature-card-img">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— TÉLÉCHARGEMENT ——— -->
+    <section id="download" class="section download-section">
+      <div class="dl-frame">
+
+        <!-- ═══ TOP AREA: left content + right image ═══ -->
+        <div class="dl-top">
+
+          <!-- LEFT 2/3 -->
+          <div class="dl-left">
+
+            <!-- Top row: two sub-frames side by side -->
+            <div class="dl-left-top">
+              <!-- CTA encouragement -->
+              <div class="dl-subframe dl-cta-box">
+                <span class="dl-cta-icon">🞼</span>
+                <p class="dl-cta-text" data-i18n="dl_cta_text">Sécurisez votre infrastructure Linux en quelques
+                  minutes.<br>CyberDiag,
+                  gratuit, conçu par des passionnés.</p>
+              </div>
+              <!-- Animated distro text -->
+              <div class="dl-subframe dl-distro-box">
+                <span class="dl-distro-label" data-i18n="dl_distro_label">Disponible sur</span>
+                <div class="dl-distro-ticker" id="distro-ticker">
+                  <div class="dl-distro-track" id="distro-track">
+                    <span class="dl-distro-name">Ubuntu</span>
+                    <span class="dl-distro-name">Debian</span>
+                    <span class="dl-distro-name">Fedora</span>
+                    <span class="dl-distro-name">Arch Linux</span>
+                    <span class="dl-distro-name">Kali Linux</span>
+                    <span class="dl-distro-name">CentOS</span>
+                    <span class="dl-distro-name">Mint</span>
+                    <span class="dl-distro-name">openSUSE</span>
+                    <span class="dl-distro-name">Manjaro</span>
+                    <span class="dl-distro-name">Pop!_OS</span>
+                    <span class="dl-distro-name">Red Hat</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom: download + terminal -->
+            <div class="dl-left-bottom">
+              <div class="dl-subframe dl-install-box">
+                <!-- Download button -->
+                <div class="dl-download-row">
+                  <a href="#" class="dl-download-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span data-i18n="dl_btn_text">Télécharger CyberDiag (.zip)</span>
+                  </a>
+                  <span class="dl-version" data-i18n="dl_version">v1.0 — 12 MB</span>
+                </div>
+
+                <!-- Faux terminal -->
+                <div class="dl-terminal">
+                  <div class="dl-terminal-bar">
+                    <div class="dl-terminal-dots">
+                      <span class="dl-tdot dl-tdot-r"></span>
+                      <span class="dl-tdot dl-tdot-y"></span>
+                      <span class="dl-tdot dl-tdot-g"></span>
+                    </div>
+                    <span class="dl-terminal-title">bash — cyberdiag</span>
+                  </div>
+                  <div class="dl-terminal-body" id="dl-terminal-body">
+                    <div class="dl-term-line"><span class="dl-term-comment"># Installation des dépendances (GTK3,
+                        WebKit2GTK, nmap, lynis, Python venv)</span></div>
+                    <div class="dl-term-line"><span class="dl-term-prompt">$</span> <span class="dl-term-cmd">sudo
+                        ./setup.sh</span></div>
+                    <div class="dl-term-line dl-term-blank"></div>
+                    <div class="dl-term-line"><span class="dl-term-comment"># Lancement de l'application</span></div>
+                    <div class="dl-term-line"><span class="dl-term-prompt">$</span> <span class="dl-term-cmd">sudo
+                        venv/bin/python webview_external.py</span></div>
+                    <div class="dl-term-line dl-term-cursor"><span class="dl-term-prompt">$</span> <span
+                        class="dl-term-blink">▌</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT 1/3 — image -->
+          <div class="dl-right">
+            <div class="dl-subframe dl-img-box">
+              <img src="assets/Mockup/main.avif" alt="CyberDiag Preview" class="dl-hero-img">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ═══ BOTTOM BAND: tools ═══ -->
+        <div class="dl-subframe dl-tools-band">
+          <div class="dl-tools-label">
+            <span class="dl-tools-title" data-i18n="dl_tools_title">Les outils de notre équipe</span>
+          </div>
+          <div class="dl-tools-list">
+            <!-- VS Code -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+                alt="VS Code">
+            </div>
+            <!-- GitLab -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg"
+                alt="GitLab">
+            </div>
+            <!-- GitHub -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
+                alt="GitHub" class="dl-tool-invert">
+            </div>
+            <!-- Notion -->
+            <div class="dl-tool-item">
+              <img
+                src="https://cdn.brandfetch.io/idPYUoikV7/theme/light/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1714126994867"
+                alt="Notion">
+            </div>
+            <!-- Claude -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.simpleicons.org/anthropic/white" alt="Claude" class="dl-tool-icon-small">
+            </div>
+            <!-- Photoshop -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg"
+                alt="Photoshop">
+            </div>
+            <!-- Blender -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg"
+                alt="Blender">
+            </div>
+            <!-- Three.js -->
+            <div class="dl-tool-item">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threejs/threejs-original.svg"
+                alt="Three.js" class="dl-tool-invert">
+            </div>
+            <!-- GSAP -->
+            <div class="dl-tool-item">
+              <img
+                src="https://cdn.brandfetch.io/idQQUeYvzS/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1765248028331"
+                alt="GSAP" class="dl-tool-rounded">
+            </div>
+            <!-- Lynis -->
+            <div class="dl-tool-item">
+              <span class="dl-tool-text-icon">Lynis</span>
+            </div>
+            <!-- Lenis -->
+            <div class="dl-tool-item">
+              <img src="assets/logo/lenis.webp" alt="Lenis" class="dl-tool-rounded">
+            </div>
+            <!-- Nmap -->
+            <div class="dl-tool-item">
+              <img
+                src="https://imgs.search.brave.com/PfMmlMDZE3UtNB-6h7D-7DqTdUbLfJEmvvr16bI3f_4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zZWVs/YS5pby93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMi8xMS9ubWFw/LWxvZ28tMjU2eDI1/Ni0xLnBuZw"
+                alt="Nmap" class="dl-tool-rounded">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ——— FAQ ——— -->
+    <section id="faq" class="section">
+      <div class="section-inner">
+        <h2 class="section-title" data-i18n="faq_title">QUESTIONS FRÉQUENTES</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary data-i18n="faq_q1">CyberDiag fonctionne-t-il sur toutes les distributions Linux ?</summary>
+            <p data-i18n="faq_a1">Oui, CyberDiag est compatible avec les principales distributions Linux (Debian,
+              Ubuntu, CentOS, Fedora, Arch, etc.).</p>
+          </details>
+          <details class="faq-item">
+            <summary data-i18n="faq_q2">Est-ce que CyberDiag est gratuit ?</summary>
+            <p data-i18n="faq_a2">CyberDiag est un projet open-source développé dans un cadre universitaire. Il est
+              entièrement gratuit.</p>
+          </details>
+          <details class="faq-item">
+            <summary data-i18n="faq_q3">Faut-il des droits root pour utiliser CyberDiag ?</summary>
+            <p data-i18n="faq_a3">Certaines analyses nécessitent des droits administrateur pour accéder aux
+              configurations système. Il est recommandé de l'exécuter avec sudo.</p>
+          </details>
+          <details class="faq-item">
+            <summary data-i18n="faq_q4">Comment contribuer au projet ?</summary>
+            <p data-i18n="faq_a4">Vous pouvez contribuer via notre dépôt GitHub. Toute contribution est la bienvenue :
+              code, documentation, retours d'utilisation.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— FOOTER ——— -->
+    <footer id="footer">
+      <div class="footer-frame">
+        <!-- parallax background -->
+        <div class="footer-bg"></div>
+
+        <!-- LEFT column -->
+        <div class="footer-left">
+          <div class="footer-top-left">
+            <p class="footer-studio" data-i18n="footer_studio">Équipe Dyvine&nbsp;Créations.</p>
+            <img src="assets/logo/logo ubs.png" alt="UBS" class="footer-ubs">
+            <p class="footer-location" data-i18n="footer_location">( Vannes — France )</p>
+          </div>
+          <div class="footer-bottom-left">
+            <p class="footer-legal" data-i18n="footer_legal">© 2026 CyberDiag, Équipe Dyvine Créations. All rights
+              reserved.</p>
+            <p class="footer-wordmark">CyberDiag<span class="footer-accent">🞼</span></p>
+          </div>
+        </div>
+
+        <!-- RIGHT column — link table + CTA card -->
+        <div class="footer-right">
+          <div class="footer-links-row">
+            <div class="footer-link-col">
+              <p class="footer-col-title" data-i18n="footer_col_index">Index</p>
+              <a href="#header" class="footer-link" data-i18n="footer_link_hero">Hero</a>
+              <a href="#discover" class="footer-link" data-i18n="footer_link_discover">Découvrir</a>
+              <a href="#features" class="footer-link" data-i18n="footer_link_features">Fonctionnalités</a>
+              <a href="#download" class="footer-link" data-i18n="footer_link_download">Télécharger</a>
+              <a href="#faq" class="footer-link" data-i18n="footer_link_faq">FAQ</a>
+            </div>
+            <div class="footer-link-col">
+              <p class="footer-col-title" data-i18n="footer_col_legal">Terms &amp; Policies</p>
+              <a href="license.html" class="footer-link" data-i18n="footer_link_license">License Agreement</a>
+              <a href="privacy.html" class="footer-link" data-i18n="footer_link_privacy">Privacy Policy</a>
+              <a href="cookies.html" class="footer-link" data-i18n="footer_link_cookies">Cookie Policy</a>
+            </div>
+            <div class="footer-link-col">
+              <p class="footer-col-title" data-i18n="footer_col_socials">Socials</p>
+              <a href="https://www.lukebaffait.fr" class="footer-link">lukebaffait.fr</a>
+              <a href="https://portfolio.victorboutros.fr/" class="footer-link">victorboutros.fr</a>
+              <a href="www.linkedin.com/in/tiya-baudin-436853336" class="footer-link">LinkedIn — Tiya</a>
+              <a href="https://www.linkedin.com/in/kyliann-fontaine/" class="footer-link">LinkedIn — Kyliann</a>
+              <a href="https://www.linkedin.com/in/yann-cloarec-122566397/" class="footer-link">LinkedIn — Yann</a>
+            </div>
+          </div>
+          <!-- CTA card -->
+          <div class="footer-cta">
+            <img src="assets/logo/logo.png" alt="CyberDiag" class="footer-cta-logo">
+            <p class="footer-cta-text" data-i18n="footer_cta_text">Votre infrastructure Linux mérite un
+              audit.<br>Simple, rapide, accessible à
+              tous.<br>Téléchargez CyberDiag maintenant.</p>
+            <a href="#" class="footer-cta-btn"><span data-i18n="footer_cta_btn">TÉLÉCHARGER</span> <span
+                class="btn-arrow">🡥</span></a>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  </main>
+</body>
+
+</html>

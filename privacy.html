@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberDiag — Privacy Policy</title>
+    <meta name="description" content="Privacy Policy for CyberDiag. CyberDiag is a student project.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .legal-content {
+            padding: 120px 24px 80px;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: calc(100vh - 300px);
+        }
+
+        .legal-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .legal-date {
+            color: var(--gray-600);
+            margin-bottom: 40px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .legal-text h2 {
+            font-size: 1.8rem;
+            margin: 40px 0 16px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .legal-text p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            color: rgba(10, 10, 15, 0.85);
+        }
+
+        .legal-text ul {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .legal-text li {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 8px;
+            color: rgba(10, 10, 15, 0.85);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============ HEADBAR ============ -->
+    <nav id="headbar" style="will-change: auto; transition: none;">
+        <a href="index.html" class="headbar-left" style="text-decoration: none;">
+            <img src="assets/logo/logo.png" alt="CyberDiag" class="headbar-logo">
+            <span class="headbar-name">CyberDiag</span>
+        </a>
+    </nav>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main id="site-content">
+        <section class="legal-content">
+            <h1 class="legal-title">Privacy Policy</h1>
+            <p class="legal-date">Last Updated: March 2026</p>
+
+            <div class="legal-text">
+                <p><strong>IMPORTANT NOTICE:</strong> CyberDiag est un projet pédagogique réalisé par des étudiants de
+                    l'Institut Universitaire de Technologie (IUT) de Vannes, Université Bretagne Sud (UBS). L'équipe de
+                    développement (Équipe Dyvine) attache une importance particulière au respect de la vie privée.</p>
+
+                <h2>1. Collecte de Données et Telemetry</h2>
+                <p>L'application CyberDiag a été conçue autour d'un principe strict de "privacy-by-design" (respect de
+                    la vie privée dès la conception) :</p>
+                <ul>
+                    <li><strong>Aucune télémétrie distante :</strong> L'application ne collecte pas, n'envoie pas et ne
+                        stocke pas de données d'utilisation sur des serveurs distants.</li>
+                    <li><strong>Traitement local :</strong> Tous les scans, audits et analyses (Nmap, Lynis, scripts
+                        custom) sont exécutés localement sur votre propre machine.</li>
+                    <li><strong>Stockage local :</strong> Les rapports générés et l'historique de vos analyses sont
+                        enregistrés exclusivement et localement sur le disque dur de l'ordinateur où CyberDiag est
+                        installé.</li>
+                </ul>
+
+                <h2>2. Informations Recueillies par l'Outil</h2>
+                <p>Dans le cadre de son fonctionnement normal (audit de sécurité), CyberDiag est amené à lire et
+                    analyser :</p>
+                <ul>
+                    <li>La configuration de votre système d'exploitation Linux.</li>
+                    <li>La liste des paquets installés, les services en cours d'exécution et les ports ouverts.</li>
+                    <li>L'architecture et la topologie du réseau local (lorsque le module réseau est activé).</li>
+                </ul>
+                <p>Ces données sont strictement utilisées pour générer le rapport d'audit et sont détruites de la
+                    mémoire vive une fois le rapport complété et sauvegardé (localement).</p>
+
+                <h2>3. Données de Navigation (Site Web)</h2>
+                <p>La visite de la vitrine web CyberDiag (ce site) occasionne la transmission d'informations minimales
+                    standard requises pour l'affichage des pages web (adresse IP, type de navigateur, etc.) gérées par
+                    l'hébergeur. L'équipe du projet n'exploite pas ces données à des fins de ciblage, de profilage ou de
+                    revente.</p>
+
+                <h2>4. Contact</h2>
+                <p>S'agissant d'un projet étudiant, il n'y a pas de délégué à la protection des données (DPO) attitré.
+                    Toutefois, pour toute question relative au code source ou au fonctionnement, vous pouvez contacter
+                    les membres de l'équipe via leurs profils respectifs (liens disponibles dans le pied de page).</p>
+            </div>
+        </section>
+
+        <!-- ——— FOOTER ——— -->
+        <footer id="footer" style="background:#0a0a0f;">
+            <div class="footer-frame"
+                style="position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 60px 24px; color: var(--white);">
+                <div
+                    style="max-width: 1200px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px;">
+
+                    <div class="footer-left" style="flex: 1; min-width: 300px;">
+                        <div class="footer-top-left" style="margin-bottom: 60px;">
+                            <p class="footer-studio"
+                                style="font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255, 255, 255, 0.4); margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase;">
+                                Équipe Dyvine&nbsp;Créations.</p>
+                            <img src="assets/logo/logo ubs.png" alt="UBS" class="footer-ubs"
+                                style="height: 32px; filter: brightness(0) invert(1); opacity: 0.4; margin-bottom: 12px;">
+                            <p class="footer-location"
+                                style="font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255, 255, 255, 0.4);">
+                                ( Vannes — France )</p>
+                        </div>
+                        <div class="footer-bottom-left">
+                            <p class="footer-legal"
+                                style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px;">© 2026
+                                CyberDiag, Équipe Dyvine Créations. All rights reserved.</p>
+                            <p class="footer-wordmark"
+                                style="font-family: var(--font); font-size: 1.8rem; font-weight: 600; letter-spacing: -0.02em;">
+                                CyberDiag<span class="footer-accent" style="color:#ff0053; margin-left:8px;">🞼</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="footer-right"
+                        style="flex: 1.5; min-width: 300px; display: flex; flex-direction: column; gap: 60px;">
+                        <div class="footer-links-row" style="display: flex; flex-wrap: wrap; gap: 60px;">
+                            <div class="footer-link-col" style="display: flex; flex-direction: column; gap: 14px;">
+                                <p class="footer-col-title"
+                                    style="font-family: var(--font-mono); font-size: 0.8rem; color: rgba(255, 255, 255, 0.35); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+                                    Index</p>
+                                <a href="index.html#header" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">Hero</a>
+                                <a href="index.html#discover" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">Découvrir</a>
+                                <a href="index.html#features" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">Fonctionnalités</a>
+                                <a href="index.html#download" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">Télécharger</a>
+                                <a href="index.html#faq" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">FAQ</a>
+                            </div>
+                            <div class="footer-link-col" style="display: flex; flex-direction: column; gap: 14px;">
+                                <p class="footer-col-title"
+                                    style="font-family: var(--font-mono); font-size: 0.8rem; color: rgba(255, 255, 255, 0.35); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+                                    Terms &amp; Policies</p>
+                                <a href="license.html" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">License
+                                    Agreement</a>
+                                <a href="privacy.html" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">Privacy
+                                    Policy</a>
+                                <a href="cookies.html" class="footer-link"
+                                    style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; transition: color 0.3s; text-decoration: none;">Cookie
+                                    Policy</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>

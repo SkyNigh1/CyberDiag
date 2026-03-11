@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberDiag</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { width: 100%; height: 100%; }
+
+body {
+  width: 100%; height: 100%;
+  margin: 0; overflow: hidden;
+  background: #060607;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ─── STAGE ─── */
+#stage {
+  width: 100%; height: 100%;
+  position: relative; overflow: hidden;
+  border-radius: 0;
+  background: #09090b;
+  border: none;
+  box-shadow: none;
+  font-size: clamp(14px, 4vmin, 24px);
+}
+
+/* ─── BLOBS (z=0, always behind) ─── */
+.global-blobs { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.blob { position: absolute; border-radius: 50%; }
+.blob-pink {
+  width: 60%; height: 60%;
+  background: radial-gradient(circle, #ff0053, transparent 65%);
+  filter: blur(40px); opacity: 0.32;
+  top: 0; left: -12%;
+  animation: dp 16s ease-in-out infinite alternate;
+}
+.blob-teal {
+  width: 55%; height: 55%;
+  background: radial-gradient(circle, #ff0053, transparent 65%);
+  filter: blur(40px); opacity: 0.26;
+  bottom: 0; right: -10%;
+  animation: dt 19s ease-in-out infinite alternate;
+}
+@keyframes dp { to { transform: translate(10%, 14%); } }
+@keyframes dt { to { transform: translate(-10%, -12%); } }
+
+/* ─── FLASH / OVERLAY ─── */
+#flash   { position:absolute; inset:0; background:#fff; opacity:0; z-index:500; pointer-events:none; }
+#overlay { position:absolute; inset:0; background:#000; opacity:0; z-index:490; pointer-events:none; }
+
+/* ─── CURSOR (transformOrigin = top-left = tip) ─── */
+#cursor {
+  position: absolute; width: 1.4em; height: 1.4em;
+  pointer-events: none; z-index: 400; opacity: 0;
+  transform-origin: 0 0;   /* tip stays fixed during scale */
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
+}
+
+/* ════════════════════════════
+   SCREENS  (each is full-stage)
+════════════════════════════ */
+.screen {
+  position: absolute; inset: 0; z-index: 10;
+  opacity: 0;
+  display: flex; flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* — shared navbar — */
+.navbar {
+  flex-shrink: 0; height: 3.2em;
+  display: flex; align-items: center;
+  padding: 0 1.4em; justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+  background: rgba(9,9,11,0.65);
+}
+.nav-logo { font-weight: 700; font-size: 0.9em; color: rgba(255,255,255,0.82); letter-spacing:-0.01em; }
+.nav-links { display:flex; gap:1.4em; }
+.nav-link  { font-size:0.68em; color:rgba(255,255,255,0.38); font-weight:500; }
+
+/* ── HOME ── */
+.home-body {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.home-logo { font-size:3.5em; font-weight:900; color:rgba(255,255,255,0.82); letter-spacing:-0.03em; line-height:1; margin-bottom:0.3em; }
+.home-sub  { font-size:0.72em; color:rgba(255,255,255,0.28); text-align:center; max-width:28em; line-height:1.55; margin-bottom:1.6em; padding:0 1em; }
+.home-btns { display:flex; gap:0.65em; }
+.btn-pill  { font-size:0.72em; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.72em 1.8em; border-radius:999px; cursor:default; position:relative; overflow:hidden; }
+.btn-solid   { background:rgba(255,255,255,0.11); border:1px solid rgba(255,255,255,0.16); color:#fff; }
+.btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.38); }
+.btn-hl { position:absolute; inset:0; background:rgba(255,255,255,0.22); border-radius:999px; opacity:0; pointer-events:none; }
+
+/* ── NIVEAU ── */
+.niveau-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 0.9em; }
+.niveau-title { font-size:1.9em; font-weight:900; color:rgba(255,255,255,0.82); letter-spacing:-0.03em; margin-bottom:1em; }
+.cards-row { display:flex; gap:0.5em; width:100%; }
+.mode-card {
+  flex:1; border-radius:10px; border:1px solid rgba(255,255,255,0.08);
+  padding:0.85em 0.7em; display:flex; flex-direction:column;
+  background:rgba(255,255,255,0.025); position:relative; overflow:hidden;
+}
+.mode-card.standard { border-color:rgba(255,255,255,0.18); background:linear-gradient(155deg,rgba(255,0,83,0.2) 0%,rgba(255,0,83,0.1) 100%); }
+.card-title { font-size:0.78em; font-weight:700; color:#fff; margin-bottom:0.4em; }
+.card-rec   { font-size:0.45em; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid rgba(255,255,255,0.2); border-radius:999px; padding:0.2em 0.6em; color:rgba(255,255,255,0.6); display:inline-block; margin-bottom:0.5em; width:fit-content; }
+.card-feat  { font-size:0.52em; color:rgba(255,255,255,0.42); display:flex; gap:0.3em; margin-bottom:0.26em; line-height:1.3; }
+.card-feat::before { content:'✓'; color:rgba(255,255,255,0.45); flex-shrink:0; }
+.card-duration { font-size:0.47em; color:rgba(255,255,255,0.25); margin-top:auto; padding-top:0.55em; }
+.card-btn { width:100%; text-align:center; font-size:0.58em; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; padding:0.6em 0; border-radius:999px; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.45); background:rgba(255,255,255,0.04); margin-top:0.75em; position:relative; overflow:hidden; }
+.mode-card.standard .card-btn { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.22); color:rgba(255,255,255,0.85); }
+.card-btn-hl { position:absolute; inset:0; background:rgba(255,255,255,0.22); opacity:0; }
+
+/* ── LOADING ── */
+.loading-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.55em; }
+.load-ring { width:2.6em; height:2.6em; border:1.5px solid rgba(255,255,255,0.08); border-top-color:rgba(255,255,255,0.75); border-radius:50%; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.load-ring.go { animation:spin 0.75s linear infinite; }
+.load-pct    { font-size:2.4em; font-weight:800; color:#fff; line-height:1; font-variant-numeric:tabular-nums; }
+.load-label  { font-size:0.54em; font-weight:500; color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase; }
+.progress-track { width:50%; height:1.5px; background:rgba(255,255,255,0.07); border-radius:2px; overflow:hidden; }
+.progress-fill  { height:100%; width:0; background:rgba(255,255,255,0.65); }
+.load-status { font-size:0.5em; color:rgba(255,255,255,0.2); letter-spacing:0.08em; min-height:1.2em; }
+
+/* ── RESULTS ── */
+.res-scroll { flex:1; overflow:hidden; position:relative; }
+.res-inner  { padding:0.9em 1.1em 2em; display:flex; flex-direction:column; gap:0.65em; will-change:transform; }
+
+.res-page-title { font-size:1.2em; font-weight:800; color:#fff; text-align:center; }
+.res-page-date  { font-size:0.52em; color:rgba(255,255,255,0.28); text-align:center; margin-top:0.1em; }
+
+.score-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:0.9em 1.1em; display:flex; align-items:center; gap:1.1em; }
+.score-ring-wrap { position:relative; flex-shrink:0; width:3.5em; height:3.5em; }
+.score-ring-wrap svg { transform:rotate(-90deg); }
+.score-val { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:1.05em; font-weight:800; color:#fff; line-height:1; }
+.score-val span { font-size:0.42em; color:rgba(255,255,255,0.38); font-weight:400; }
+.score-grade { font-size:1.0em; font-weight:700; color:#fff; margin-bottom:0.2em; }
+.score-desc  { font-size:0.57em; color:rgba(255,255,255,0.38); line-height:1.45; }
+
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:0.45em; }
+.stat-chip { background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.065); border-radius:8px; padding:0.5em 0.3em; text-align:center; }
+.s-num { font-size:1.3em; font-weight:700; color:#fff; }
+.s-lbl { font-size:0.44em; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-top:0.15em; }
+
+/* Device rows */
+.device-wrap { display:flex; flex-direction:column; }
+.device-item {
+  background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07);
+  border-left:2.5px solid #d4a017; border-radius:8px;
+  padding:0.65em 0.85em; display:flex; align-items:center; gap:0.5em;
+}
+.device-item.open { border-radius:8px 8px 0 0; border-bottom-color:transparent; }
+.device-arrow { font-size:0.6em; color:rgba(255,255,255,0.4); cursor:default; flex-shrink:0; display:inline-block; transform-origin:center; }
+.device-body  { flex:1; min-width:0; }
+.device-name  { font-size:0.65em; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.device-meta  { font-size:0.5em; color:rgba(255,255,255,0.28); margin-top:0.15em; }
+.d-badge { font-size:0.46em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; background:rgba(212,160,23,0.14); color:#d4a017; border-radius:3px; padding:0.2em 0.55em; flex-shrink:0; }
+
+/* Expanded detail */
+.device-detail {
+  background:rgba(255,255,255,0.015);
+  border:1px solid rgba(255,255,255,0.07);
+  border-left:2.5px solid #d4a017;
+  border-top:none; border-radius:0 0 8px 8px;
+  overflow:hidden; height:0; opacity:0;
+}
+.detail-cols {
+  display:flex;
+  padding:0.75em 0.8em;
+  gap:0.6em;
+}
+.detail-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:0.38em; }
+.detail-col-title { font-size:0.5em; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.28); padding-bottom:0.4em; border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:0.2em; }
+
+/* Ports */
+.port-row  { display:flex; align-items:center; gap:0.5em; padding:0.18em 0; }
+.port-num  { font-size:0.65em; font-weight:700; color:#fff; width:2.5em; font-variant-numeric:tabular-nums; flex-shrink:0; }
+.port-name { font-size:0.6em; color:rgba(255,255,255,0.45); flex:1; }
+.port-dot  { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.port-dot.ok   { background:#22c55e; box-shadow:0 0 5px rgba(34,197,94,0.4); }
+.port-dot.warn { background:#d4a017; box-shadow:0 0 5px rgba(212,160,23,0.4); }
+
+/* Failles */
+.faille-row  { display:flex; align-items:flex-start; gap:0.45em; padding:0.22em 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.faille-row:last-child { border-bottom:none; }
+.faille-dot  { width:5px; height:5px; border-radius:50%; flex-shrink:0; margin-top:0.3em; }
+.faille-dot.high { background:#ef4444; box-shadow:0 0 5px rgba(239,68,68,0.4); }
+.faille-dot.med  { background:#d4a017; }
+.faille-body { flex:1; }
+.faille-name { font-size:0.6em; font-weight:600; color:#fff; }
+.faille-desc { font-size:0.5em; color:rgba(255,255,255,0.28); margin-top:0.1em; }
+.faille-badge { font-size:0.44em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.15em 0.5em; border-radius:3px; margin-top:0.22em; display:inline-block; }
+.faille-badge.high { background:rgba(239,68,68,0.14); color:#ef4444; }
+.faille-badge.med  { background:rgba(212,160,23,0.14); color:#d4a017; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="global-blobs">
+    <div class="blob blob-pink"></div>
+    <div class="blob blob-teal"></div>
+  </div>
+  <div id="flash"></div>
+  <div id="overlay"></div>
+
+  <!-- ══ HOME ══ -->
+  <div class="screen" id="screen-home">
+    <div class="navbar">
+      <div class="nav-logo">CyberDiag</div>
+      <div class="nav-links"><div class="nav-link">Accueil</div><div class="nav-link">Historique</div><div class="nav-link">À propos</div></div>
+    </div>
+    <div class="home-body">
+      <div class="home-logo">CyberDiag</div>
+      <div class="home-sub">Solution d'analyse de sécurité intelligente qui évalue votre niveau de protection.</div>
+      <div class="home-btns" id="home-btns">
+        <div class="btn-pill btn-solid" id="btn-demarrer">Démarrer<div class="btn-hl" id="hl-demarrer"></div></div>
+        <div class="btn-pill btn-outline">Voir l'historique</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NIVEAU ══ -->
+  <div class="screen" id="screen-niveau">
+    <div class="navbar">
+      <div class="nav-logo">CyberDiag</div>
+      <div class="nav-links"><div class="nav-link">Accueil</div><div class="nav-link">Historique</div><div class="nav-link">À propos</div></div>
+    </div>
+    <div class="niveau-body">
+      <div class="niveau-title">Niveau d'analyse</div>
+      <div class="cards-row">
+        <div class="mode-card" id="card-basique">
+          <div class="card-title">Analyse Basique</div>
+          <div class="card-feat">Machine locale</div>
+          <div class="card-feat">100 ports</div>
+          <div class="card-feat">Services actifs</div>
+          <div class="card-duration">⏱ ~2–5 min</div>
+          <div class="card-btn">Choisir</div>
+        </div>
+        <div class="mode-card standard" id="card-standard">
+          <div class="card-title">Analyse Standard</div>
+          <div class="card-rec">Recommandé</div>
+          <div class="card-feat">Réseau local /24</div>
+          <div class="card-feat">1000 ports</div>
+          <div class="card-feat">Vulnérabilités connues</div>
+          <div class="card-duration">⏱ ~10–20 min</div>
+          <div class="card-btn" id="btn-standard">Choisir<div class="card-btn-hl" id="hl-standard"></div></div>
+        </div>
+        <div class="mode-card" id="card-appro">
+          <div class="card-title">Analyse Approfondie</div>
+          <div class="card-feat">Réseau /24 complet</div>
+          <div class="card-feat">65 535 ports</div>
+          <div class="card-feat">Pentest automatisé</div>
+          <div class="card-duration">⏱ ~30–60 min</div>
+          <div class="card-btn">Choisir</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LOADING ══ -->
+  <div class="screen" id="screen-loading">
+    <div class="navbar">
+      <div class="nav-logo">CyberDiag</div>
+      <div class="nav-links"><div class="nav-link">Accueil</div><div class="nav-link">Historique</div><div class="nav-link">À propos</div></div>
+    </div>
+    <div class="loading-body">
+      <div class="load-ring" id="load-ring"></div>
+      <div class="load-pct" id="load-pct">0%</div>
+      <div class="load-label">Analyse en cours</div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+      <div class="load-status" id="load-status">Initialisation...</div>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+  <div class="screen" id="screen-results">
+    <div class="navbar">
+      <div class="nav-logo">CyberDiag</div>
+      <div class="nav-links"><div class="nav-link">Accueil</div><div class="nav-link">Historique</div><div class="nav-link">À propos</div></div>
+    </div>
+    <div class="res-scroll">
+      <div class="res-inner" id="res-inner">
+
+        <div>
+          <div class="res-page-title">Rapport d'analyse</div>
+          <div class="res-page-date">3 mars 2026 à 19:27</div>
+        </div>
+
+        <div class="score-card">
+          <div class="score-ring-wrap">
+            <svg width="100%" height="100%" viewBox="0 0 42 42">
+              <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2.5"/>
+              <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,0.72)" stroke-width="2.5" stroke-dasharray="71.6 106.8" stroke-linecap="round"/>
+            </svg>
+            <div class="score-val">67<span>/ 100</span></div>
+          </div>
+          <div>
+            <div class="score-grade">Bon</div>
+            <div class="score-desc">Système globalement sécurisé.<br>Quelques points à corriger.</div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-chip"><div class="s-num">0</div><div class="s-lbl">Critique</div></div>
+          <div class="stat-chip"><div class="s-num">2</div><div class="s-lbl">Élevé</div></div>
+          <div class="stat-chip"><div class="s-num">4</div><div class="s-lbl">Moyen</div></div>
+          <div class="stat-chip"><div class="s-num">3</div><div class="s-lbl">Faible</div></div>
+        </div>
+
+        <!-- Machine 1 — expandable -->
+        <div class="device-wrap">
+          <div class="device-item" id="device-1">
+            <div class="device-arrow" id="arrow-1">▶</div>
+            <div class="device-body">
+              <div class="device-name">livebox.home · 192.168.1.1</div>
+              <div class="device-meta">3 ports ouverts · 2 failles détectées</div>
+            </div>
+            <div class="d-badge" style="background:rgba(239,68,68,0.12);color:#ef4444;">Élevé</div>
+          </div>
+          <div class="device-detail" id="device-detail-1">
+            <div class="detail-cols" id="detail-cols-1">
+              <!-- LEFT: Ports -->
+              <div class="detail-col">
+                <div class="detail-col-title">Ports ouverts</div>
+                <div class="port-row"><div class="port-num">80</div><div class="port-name">HTTP</div><div class="port-dot ok"></div></div>
+                <div class="port-row"><div class="port-num">443</div><div class="port-name">HTTPS</div><div class="port-dot ok"></div></div>
+                <div class="port-row"><div class="port-num">22</div><div class="port-name">SSH</div><div class="port-dot warn"></div></div>
+              </div>
+              <!-- RIGHT: Failles -->
+              <div class="detail-col">
+                <div class="detail-col-title">Failles détectées</div>
+                <div class="faille-row">
+                  <div class="faille-dot high"></div>
+                  <div class="faille-body">
+                    <div class="faille-name">Certificat SSL expiré</div>
+                    <div class="faille-desc">Expiré depuis 12 jours</div>
+                    <div class="faille-badge high">Élevé</div>
+                  </div>
+                </div>
+                <div class="faille-row">
+                  <div class="faille-dot med"></div>
+                  <div class="faille-body">
+                    <div class="faille-name">SSH version obsolète</div>
+                    <div class="faille-desc">OpenSSH 7.2 — CVE-2023-38408</div>
+                    <div class="faille-badge med">Moyen</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Machine 2 -->
+        <div class="device-wrap">
+          <div class="device-item">
+            <div class="device-arrow">▶</div>
+            <div class="device-body">
+              <div class="device-name">pc-bureau · 192.168.1.20</div>
+              <div class="device-meta">2 ports ouverts · 0 faille</div>
+            </div>
+            <div class="d-badge" style="background:rgba(34,197,94,0.1);color:#22c55e;">OK</div>
+          </div>
+        </div>
+
+        <!-- Machine 3 -->
+        <div class="device-wrap">
+          <div class="device-item">
+            <div class="device-arrow">▶</div>
+            <div class="device-body">
+              <div class="device-name">nas.home · 192.168.1.42</div>
+              <div class="device-meta">4 ports ouverts · 1 faille</div>
+            </div>
+            <div class="d-badge">Moyen</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CURSOR (tip = top-left, transform-origin 0 0 via CSS) -->
+  <div id="cursor">
+    <svg viewBox="0 0 20 22" fill="none" width="100%" height="100%">
+      <path d="M3 2L17 11L11 12.5L8.5 19.5L3 2Z" fill="white"/>
+      <path d="M3 2L17 11L11 12.5L8.5 19.5L3 2Z" stroke="rgba(0,0,0,0.4)" stroke-width="0.5"/>
+    </svg>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+const stage  = document.getElementById('stage');
+const cursor = document.getElementById('cursor');
+const ctr    = { val: 0 };
+
+/* ── Helpers ── */
+function sr() { return stage.getBoundingClientRect(); }
+
+/* Position of el's top-left relative to stage */
+function stagePos(el) {
+  const e = el.getBoundingClientRect(), s = sr();
+  return { x: e.left - s.left, y: e.top - s.top, w: e.width, h: e.height };
+}
+
+/*  Kick off screen zoom centered on cursor tip + scale cursor simultaneously.
+    cursor.transformOrigin is "0 0" (CSS), so scaling keeps the tip fixed.
+    The screen's transformOrigin is set to the cursor tip position so the button
+    (under the cursor) stays visually anchored during zoom.             */
+function zoomOnTip(screenId, S, dur, ease) {
+  const screenEl = document.getElementById(screenId);
+  const sw = stage.clientWidth, sh = stage.clientHeight;
+  /* Cursor tip position in stage coords = cursor's current x,y translation */
+  const tipX = gsap.getProperty(cursor, 'x');
+  const tipY = gsap.getProperty(cursor, 'y');
+  gsap.set(screenEl, {
+    transformOrigin: (tipX / sw * 100).toFixed(3) + '% ' + (tipY / sh * 100).toFixed(3) + '%'
+  });
+  /* No cursor scaling — keeps SVG crisp at all zoom levels */
+}
+
+/* Move cursor to a position (tip lands at x,y in stage coords) */
+function moveCursor(x, y, dur, ease) {
+  return gsap.to(cursor, { x, y, duration: dur, ease });
+}
+
+const STATUSES = [
+  'Initialisation...', 'Scan du réseau local...',
+  'Détection des ports...', 'Analyse des services...',
+  'Vérification des vulnérabilités...', 'Génération du rapport...'
+];
+
+/* ════════════════════════════════════════════
+   MAIN BUILD
+════════════════════════════════════════════ */
+function build() {
+  gsap.killTweensOf('*');
+  document.getElementById('load-ring').classList.remove('go');
+  ctr.val = 0;
+
+  /* ── Hard reset ── */
+  gsap.set('.screen',           { opacity:0, scale:1, zoom:1, x:0, y:0 });
+  gsap.set('#cursor',           { opacity:0, scale:1, x:0, y:0, width:'1.4em', height:'1.4em' });
+  gsap.set('#flash, #overlay',  { opacity:0 });
+  gsap.set('#home-btns',        { opacity:0, y:8 });
+  gsap.set('.mode-card',        { opacity:0, y:12 });
+  gsap.set('#prog-fill',        { width:'0%' });
+  gsap.set('#load-pct',         { innerHTML:'0%' });
+  gsap.set('#res-inner',        { y:0 });
+  gsap.set('#res-inner > *',    { opacity:0, y:6 });
+  gsap.set('#hl-demarrer, #hl-standard', { opacity:0 });
+  gsap.set('#device-detail-1',  { height:0, opacity:0 });
+  gsap.set('#detail-cols-1',    { x:0 });
+  gsap.set('#arrow-1',          { rotation:0 });
+  gsap.set('#screen-results',   { scale:1, zoom:1, x:0, y:0, transformOrigin:'50% 50%' });
+  document.getElementById('device-1').classList.remove('open');
+
+  /* Initial states */
+  gsap.set('#screen-home',    { scale:2.0, transformOrigin:'50% 50%' });
+  gsap.set('#screen-results', { scale:1.3, zoom:1, transformOrigin:'50% 18%' });
+
+  const ZOOM1 = 3.6;   /* 4.5 × 0.80 */
+  const ZOOM2 = 3.15;  /* 4.5 × 0.70 */
+  const ZOOM3 = 2.4;   /* detail zoom */
+
+  const tl = gsap.timeline({ delay: 0.3 });
+
+  /* ───────────────────────────────
+     1 · HOME  dezoom
+  ─────────────────────────────── */
+  tl
+    .to('#screen-home', { opacity:1, duration:0.4, ease:'power2.out' })
+    .to('#screen-home', { scale:1,   duration:1.2, ease:'expo.out'   }, '-=0.3')
+    .to('#home-btns',   { opacity:1, y:0, duration:0.4, ease:'power2.out' }, '-=0.55')
+    .to({}, { duration:0.45 })
+
+  /* ───────────────────────────────
+     2 · Cursor → bouton Démarrer
+  ─────────────────────────────── */
+    .call(() => {
+      const p = stagePos(document.getElementById('btn-demarrer'));
+      gsap.set(cursor, { x: p.x - p.w * 1.2, y: p.y - p.h * 0.8 });
+    })
+    .to(cursor, { opacity:1, duration:0.18 })
+    .call(() => {
+      const p = stagePos(document.getElementById('btn-demarrer'));
+      moveCursor(p.x + p.w * 0.35, p.y + p.h * 0.45, 0.65, 'power3.inOut');
+    })
+    .to({}, { duration:0.65 })
+
+  /* ───────────────────────────────
+     3 · Zoom ciblé SUR le bouton → clic → transition
+  ─────────────────────────────── */
+    .call(() => zoomOnTip('screen-home', ZOOM1, 0.7, 'power3.inOut'))
+    .to('#screen-home', { scale:ZOOM1, duration:0.7, ease:'power3.inOut', force3D: false })
+    .to(cursor, { width:'2.7em', height:'2.7em', duration:0.7, ease:'power3.inOut' }, '<')
+    /* clic au pic */
+    .to('#hl-demarrer', { opacity:1, duration:0.07 })
+    .to(cursor,         { scale:0.82, duration:0.07 }, '<')
+    .to('#hl-demarrer', { opacity:0, duration:0.12 }, '+=0.08')
+    .to(cursor,         { scale:1, duration:0.1 }, '<')
+    /* flash → Niveau */
+    .to('#flash', { opacity:0.55, duration:0.07 })
+    .to('#flash', { opacity:0, duration:0.2 })
+    .to('#screen-home', { opacity:0, duration:0.05 }, '<')
+    .to(cursor, { opacity:0, scale:1, width:'1.4em', height:'1.4em', duration:0.05 }, '<')
+    /* Niveau apparaît */
+    .to('#screen-niveau', { opacity:1, duration:0.35, ease:'power2.out' })
+    .to('.mode-card', { opacity:1, y:0, stagger:0.1, duration:0.38, ease:'power2.out' }, '-=0.2')
+    .to({}, { duration:0.4 })
+
+  /* ───────────────────────────────
+     4 · Cursor → bouton Choisir Standard
+  ─────────────────────────────── */
+    .call(() => {
+      const p = stagePos(document.getElementById('btn-standard'));
+      gsap.set(cursor, { x: p.x - p.w * 0.8, y: p.y - p.h * 0.6, scale:1 });
+    })
+    .to(cursor, { opacity:1, duration:0.18 })
+    .call(() => {
+      const p = stagePos(document.getElementById('btn-standard'));
+      moveCursor(p.x + p.w * 0.35, p.y + p.h * 0.45, 0.6, 'power3.inOut');
+    })
+    .to({}, { duration:0.6 })
+    .to('#card-standard', { borderColor:'rgba(255,255,255,0.4)', duration:0.18 })
+
+  /* ───────────────────────────────
+     5 · Zoom ciblé SUR Choisir → clic → transition
+  ─────────────────────────────── */
+    .call(() => zoomOnTip('screen-niveau', ZOOM2, 0.68, 'power3.inOut'))
+    .to('#screen-niveau', { scale:ZOOM2, duration:0.68, ease:'power3.inOut', force3D: false })
+    .to(cursor, { width:'2.5em', height:'2.5em', duration:0.68, ease:'power3.inOut' }, '<')
+    /* clic */
+    .to('#hl-standard',   { opacity:1, duration:0.07 })
+    .to(cursor,           { scale:0.82, duration:0.07 }, '<')
+    .to('#hl-standard',   { opacity:0, duration:0.12 }, '+=0.08')
+    .to(cursor,           { scale:1, duration:0.1 }, '<')
+    /* flash → Loading */
+    .to('#flash', { opacity:0.52, duration:0.07 })
+    .to('#flash', { opacity:0, duration:0.2 })
+    .to('#screen-niveau', { opacity:0, duration:0.05 }, '<')
+    .to(cursor, { opacity:0, scale:1, width:'1.4em', height:'1.4em', duration:0.05 }, '<')
+    .to('#screen-loading', { opacity:1, duration:0.3, ease:'power2.out' })
+    .call(() => { document.getElementById('load-ring').classList.add('go'); })
+
+  /* ───────────────────────────────
+     6 · Loading
+  ─────────────────────────────── */
+    .to(ctr, {
+      val:100, duration:2.0, ease:'power1.inOut',
+      onUpdate() {
+        const v = Math.min(100, Math.round(ctr.val));
+        document.getElementById('load-pct').textContent = v + '%';
+        document.getElementById('prog-fill').style.width = v + '%';
+        document.getElementById('load-status').textContent =
+          STATUSES[Math.min(Math.floor(v / 18), STATUSES.length - 1)];
+      }
+    }, '-=0.1')
+    .to({}, { duration:0.28 })
+
+  /* ───────────────────────────────
+     7 · Flash → Résultats dezoom
+  ─────────────────────────────── */
+    .to('#flash', { opacity:0.52, duration:0.07 })
+    .call(() => { document.getElementById('load-ring').classList.remove('go'); })
+    .to('#flash', { opacity:0, duration:0.22 })
+    .to('#screen-loading', { opacity:0, duration:0.05 }, '<+=0.06')
+    .to('#screen-results', { opacity:1, scale:1, duration:0.65, ease:'expo.out', force3D: false })
+    .to('#res-inner > *',  { opacity:1, y:0, stagger:0.07, duration:0.3, ease:'power2.out' }, '-=0.35')
+    .to({}, { duration:0.5 })
+
+  /* ───────────────────────────────
+     8 · Scroll pour voir machine 1
+  ─────────────────────────────── */
+    .to('#res-inner', { y:-88, duration:1.2, ease:'power2.inOut' })
+    .to({}, { duration:0.4 })
+
+  /* ───────────────────────────────
+     9 · Cursor depuis centre → flèche machine 1
+  ─────────────────────────────── */
+    .call(() => {
+      gsap.set(cursor, {
+        x: stage.clientWidth  / 2,
+        y: stage.clientHeight / 2,
+        scale: 1, opacity: 0
+      });
+    })
+    .to(cursor, { opacity:1, duration:0.2 })
+    .call(() => {
+      const p = stagePos(document.getElementById('arrow-1'));
+      moveCursor(p.x + p.w * 0.5, p.y + p.h * 0.5, 0.7, 'power3.inOut');
+    })
+    .to({}, { duration:0.7 })
+
+  /* ───────────────────────────────
+     10 · Clic flèche → dépliage
+  ─────────────────────────────── */
+    .to(cursor, { scale:0.78, duration:0.07 })
+    .to(cursor, { scale:1.0,  duration:0.1 }, '+=0.07')
+    .call(() => {
+      document.getElementById('device-1').classList.add('open');
+      gsap.to('#arrow-1',         { rotation:90, duration:0.3, ease:'power2.out' });
+      gsap.to('#device-detail-1', { height:'auto', opacity:1, duration:0.4, ease:'power2.out' });
+    })
+    .to({}, { duration:0.45 })   /* attendre fin d'ouverture */
+
+  /* ───────────────────────────────
+     11 · Zoom sur la gauche du détail
+          transformOrigin = bord gauche du panneau
+  ─────────────────────────────── */
+    .call(() => {
+      const d = document.getElementById('device-detail-1').getBoundingClientRect();
+      const s = sr();
+      const sw = stage.clientWidth, sh = stage.clientHeight;
+      const oxPx = d.left - s.left;
+      const oyPx = d.top - s.top + d.height * 0.5;
+      gsap.set('#screen-results', {
+        transformOrigin: (oxPx / sw * 100).toFixed(2) + '% ' + (oyPx / sh * 100).toFixed(2) + '%'
+      });
+      window._detailW = d.width;
+    })
+    .to('#screen-results', { scale: ZOOM3, duration: 0.65, ease: 'expo.out', force3D: false })
+    .to(cursor, { width:'2.2em', height:'2.2em', duration:0.65, ease:'expo.out' }, '<')
+    .to({}, { duration:0.55 })
+
+  /* ───────────────────────────────
+     12 · Pan gauche → droite  (révèle les failles)
+          Avec scale (pas zoom), le translate est en pixels écran directement.
+  ─────────────────────────────── */
+    .call(() => {
+      const Z = ZOOM3;
+      /* Décalage visuel souhaité = moitié de la largeur zoomée du panneau */
+      window._panDelta = window._detailW * Z / 2;
+      window._cursorXPan = gsap.getProperty(cursor, 'x');
+      window._screenXBefore = gsap.getProperty(document.getElementById('screen-results'), 'x');
+    })
+    .addLabel('pan')
+    .to('#screen-results', {
+      x: () => window._screenXBefore - window._panDelta,
+      duration: 2.4,
+      ease: 'power2.inOut'
+    }, 'pan')
+    .to(cursor, {
+      x: () => window._cursorXPan - window._panDelta,
+      duration: 2.4,
+      ease: 'power2.inOut'
+    }, 'pan')
+    .to({}, { duration:0.8 })
+
+    /* Cursor fade before loop */
+    .to(cursor, { opacity:0, duration:0.35 })
+
+  /* ───────────────────────────────
+     Fin → fondu noir → boucle
+  ─────────────────────────────── */
+    .to('#overlay', { opacity:1, duration:0.65, ease:'power2.inOut' })
+    .call(() => {
+      setTimeout(() => {
+        gsap.set('#overlay', { opacity:0 });
+        build();
+      }, 400);
+    });
+}
+
+window.addEventListener('load', build);
+</script>
+</body>
+</html>
