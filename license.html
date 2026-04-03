@@ -54,10 +54,14 @@
             if (unsupported) {
                 document.documentElement.classList.add('symbol-fallback-active');
             }
+
+            if (isIOS) {
+                document.documentElement.classList.add('arrow-fallback-active');
+            }
         })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260403b">
-    <script type="module" src="assets/js/symbol-fallback.js?v=20260403b"></script>
+    <link rel="stylesheet" href="styles.css?v=20260403c">
+    <script type="module" src="assets/js/symbol-fallback.js?v=20260403c"></script>
     <style>
         .legal-content {
             padding: 120px 24px 80px;

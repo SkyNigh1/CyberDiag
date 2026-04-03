@@ -1526,6 +1526,10 @@ img {
   display: none !important;
 }
 
+.arrow-fallback-active .btn-arrow {
+  display: none !important;
+}
+
 /* RIGHT column — link table, top-aligned */
 .footer-right {
   display: flex;

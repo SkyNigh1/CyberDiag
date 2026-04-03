@@ -8,7 +8,7 @@ import {
 import { initFeaturesCarousel } from './features-carousel.js';
 import { initDownloadSection } from './download-section.js';
 import { getCurrentLanguage, getNextLanguage, setLanguage } from './i18n.js';
-import { applySymbolFallback } from './symbol-fallback.js';
+import { applySymbolFallback, applyArrowFallback } from './symbol-fallback.js?v=20260403c';
 
 function initPreloader(lenis) {
   const preloader = document.getElementById('preloader');
@@ -108,10 +108,12 @@ function initLanguageToggle() {
 
   setLanguage(getCurrentLanguage());
   applySymbolFallback();
+  applyArrowFallback();
 
   langToggle.addEventListener('click', () => {
     setLanguage(getNextLanguage());
     applySymbolFallback();
+    applyArrowFallback();
   });
 }
 
