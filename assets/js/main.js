@@ -8,6 +8,7 @@ import {
 import { initFeaturesCarousel } from './features-carousel.js';
 import { initDownloadSection } from './download-section.js';
 import { getCurrentLanguage, getNextLanguage, setLanguage } from './i18n.js';
+import { applySymbolFallback } from './symbol-fallback.js';
 
 function initPreloader(lenis) {
   const preloader = document.getElementById('preloader');
@@ -106,9 +107,11 @@ function initLanguageToggle() {
   if (!langToggle) return;
 
   setLanguage(getCurrentLanguage());
+  applySymbolFallback();
 
   langToggle.addEventListener('click', () => {
     setLanguage(getNextLanguage());
+    applySymbolFallback();
   });
 }
 
