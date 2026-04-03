@@ -3,14 +3,17 @@ export function initFeaturesCarousel() {
   const tabs = gsap.utils.toArray('.feature-tab');
   const carousel = document.querySelector('.features-carousel');
   const total = cards.length;
+  const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(hover: none)').matches;
 
   if (!carousel || total === 0 || tabs.length === 0) return;
 
   // --- Config ---
-  const BEND = 400;         // curve intensity in px (higher = more arc + tilt)
+  const BEND = isCoarsePointer ? 280 : 400;  // curve intensity in px (higher = more arc + tilt)
   const SCROLL_SPEED = 12;  // drag sensitivity multiplier
   const SCROLL_EASE = 0.05; // lerp factor
-  const PADDING = 120;      // px gap between cards
+  const PADDING = isCoarsePointer ? 72 : 120; // px gap between cards
+  const DRAG_FACTOR = isCoarsePointer ? 0.1 : 0.025;
 
   // --- Sizing ---
   let containerW, containerH, cardW, cardH, itemW, totalW;
@@ -152,7 +155,7 @@ export function initFeaturesCarousel() {
   function onPointerMove(e) {
     if (!isDown) return;
     const x = e.clientX ?? 0;
-    const dist = (startX - x) * (SCROLL_SPEED * 0.025) * (containerW / 400);
+    const dist = (startX - x) * (SCROLL_SPEED * DRAG_FACTOR) * (containerW / 400);
     setTarget(scroll.position + dist);
   }
 

@@ -1833,8 +1833,39 @@ img {
   }
 
   .features-carousel {
-    height: clamp(420px, 75vw, 600px);
+    height: clamp(320px, 88vw, 460px);
     margin-top: 32px;
+  }
+
+  .feature-card {
+    width: clamp(150px, 44vw, 210px);
+    border-radius: 14px;
+    padding: 20px 14px 0;
+  }
+
+  .feature-card-badge {
+    font-size: 0.5rem;
+    padding: 3px 10px;
+  }
+
+  .feature-card-title {
+    font-size: clamp(1.1rem, 4.8vw, 1.6rem);
+  }
+
+  .feature-card-dot {
+    font-size: 1.1rem;
+    margin: 10px 0 6px;
+  }
+
+  .feature-card-desc {
+    font-size: clamp(0.72rem, 2.3vw, 0.95rem);
+    line-height: 1.4;
+    margin-top: 6px;
+    padding: 0 4px;
+  }
+
+  .feature-card-img-wrap {
+    border-radius: 10px 10px 0 0;
   }
 
   /* --- Download --- */

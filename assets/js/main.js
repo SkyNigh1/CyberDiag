@@ -5,7 +5,7 @@ import {
   initSectionAnimations,
   initDiscoverSectionPerformance,
 } from './animations.js';
-import { initFeaturesCarousel } from './features-carousel.js';
+import { initFeaturesCarousel } from './features-carousel.js?v=20260403d';
 import { initDownloadSection } from './download-section.js';
 import { getCurrentLanguage, getNextLanguage, setLanguage } from './i18n.js';
 import { applySymbolFallback, applyArrowFallback } from './symbol-fallback.js?v=20260403c';
