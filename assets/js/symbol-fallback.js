@@ -1,5 +1,4 @@
 const PRIMARY_SYMBOL = '🞼';
-const FALLBACK_SYMBOL = '◆';
 const SYMBOL_SELECTORS = '.marquee-dot, .discover-accent, .feature-card-dot, .dl-cta-icon, .footer-accent';
 
 let symbolSupportCache;
@@ -46,13 +45,13 @@ export function isPrimarySymbolSupported() {
   return symbolSupportCache;
 }
 
-function replaceTextNodeSymbols(rootElement) {
+function removeTextNodeSymbols(rootElement) {
   const walker = document.createTreeWalker(rootElement, NodeFilter.SHOW_TEXT);
   let currentNode = walker.nextNode();
 
   while (currentNode) {
     if (currentNode.nodeValue && currentNode.nodeValue.includes(PRIMARY_SYMBOL)) {
-      currentNode.nodeValue = currentNode.nodeValue.split(PRIMARY_SYMBOL).join(FALLBACK_SYMBOL);
+      currentNode.nodeValue = currentNode.nodeValue.split(PRIMARY_SYMBOL).join('');
     }
     currentNode = walker.nextNode();
   }
@@ -62,7 +61,9 @@ export function applySymbolFallback(root = document) {
   if (isPrimarySymbolSupported()) return;
 
   root.querySelectorAll(SYMBOL_SELECTORS).forEach((element) => {
-    replaceTextNodeSymbols(element);
+    removeTextNodeSymbols(element);
+    element.style.display = 'none';
+    element.setAttribute('aria-hidden', 'true');
   });
 
   document.documentElement.classList.add('symbol-fallback-active');
