@@ -13,7 +13,7 @@ export function initFeaturesCarousel() {
   const SCROLL_SPEED = 12;  // drag sensitivity multiplier
   const SCROLL_EASE = 0.05; // lerp factor
   const PADDING = isCoarsePointer ? 72 : 120; // px gap between cards
-  const DRAG_FACTOR = isCoarsePointer ? 0.1 : 0.025;
+  const DRAG_FACTOR = isCoarsePointer ? 0.2 : 0.025;
 
   // --- Sizing ---
   let containerW, containerH, cardW, cardH, itemW, totalW;

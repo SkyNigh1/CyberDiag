@@ -5,10 +5,10 @@ import {
   initSectionAnimations,
   initDiscoverSectionPerformance,
 } from './animations.js';
-import { initFeaturesCarousel } from './features-carousel.js?v=20260403d';
+import { initFeaturesCarousel } from './features-carousel.js?v=20260403e';
 import { initDownloadSection } from './download-section.js';
 import { getCurrentLanguage, getNextLanguage, setLanguage } from './i18n.js';
-import { applySymbolFallback, applyArrowFallback } from './symbol-fallback.js?v=20260403c';
+import { applySymbolFallback, applyArrowFallback } from './symbol-fallback.js?v=20260403f';
 
 function initPreloader(lenis) {
   const preloader = document.getElementById('preloader');
@@ -25,6 +25,36 @@ function initPreloader(lenis) {
     initDiscoverSectionPerformance();
     initFeaturesCarousel();
     initDownloadSection();
+    return;
+  }
+
+  const isResponsivePreloader = window.matchMedia('(max-width: 768px)').matches ||
+    window.matchMedia('(pointer: coarse)').matches;
+
+  if (isResponsivePreloader) {
+    lenis.stop();
+    pName.style.display = 'none';
+    gsap.set(pLogo, { opacity: 0 });
+
+    const mobileIntroTL = gsap.timeline({
+      onComplete: () => {
+        lenis.start();
+        preloader.style.pointerEvents = 'none';
+        initSectionAnimations();
+        initLogoParallax();
+        initFooterAnimations();
+        initHeroMouseParallax();
+        initDiscoverSectionPerformance();
+        initFeaturesCarousel();
+        initDownloadSection();
+      },
+    });
+
+    mobileIntroTL
+      .to(pLogo, { opacity: 1, duration: 0.75, ease: 'power2.out' })
+      .to({}, { duration: 0.35 })
+      .to(preloader, { yPercent: -100, duration: 0.95, ease: 'power3.inOut' });
+
     return;
   }
 

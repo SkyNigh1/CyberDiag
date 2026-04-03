@@ -1669,6 +1669,10 @@ img {
     --hero-frame-inset: 8px;
   }
 
+  #preloader-name {
+    display: none;
+  }
+
   /* --- Hero --- */
   .hero-frame {
     flex-direction: column;
@@ -1866,6 +1870,12 @@ img {
 
   .feature-card-img-wrap {
     border-radius: 10px 10px 0 0;
+    min-height: clamp(96px, 28vw, 140px);
+  }
+
+  .feature-card-img {
+    height: 100%;
+    object-fit: cover;
   }
 
   /* --- Download --- */
