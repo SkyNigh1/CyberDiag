@@ -6,8 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberDiag — Privacy Policy</title>
     <meta name="description" content="Privacy Policy for CyberDiag. CyberDiag is a student project.">
-    <link rel="stylesheet" href="styles.css">
-    <script type="module" src="assets/js/symbol-fallback.js"></script>
+    <script>
+        (function () {
+            var ua = navigator.userAgent || '';
+            var isIOS = /iPhone|iPad|iPod/.test(ua) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            var unsupported = isIOS;
+
+            if (!unsupported) {
+                try {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = 64;
+                    canvas.height = 64;
+                    var ctx = canvas.getContext('2d');
+
+                    if (!ctx) {
+                        unsupported = true;
+                    } else {
+                        ctx.textBaseline = 'top';
+                        ctx.font = '48px "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols 2", sans-serif';
+
+                        var hash = function (glyph) {
+                            ctx.clearRect(0, 0, 64, 64);
+                            ctx.fillStyle = '#000';
+                            ctx.fillText(glyph, 4, 4);
+                            var data = ctx.getImageData(0, 0, 64, 64).data;
+                            var acc = 2166136261;
+
+                            for (var i = 3; i < data.length; i += 4) {
+                                acc ^= data[i];
+                                acc = Math.imul(acc, 16777619);
+                            }
+
+                            return acc >>> 0;
+                        };
+
+                        var target = hash('\uD83D\uDFBC');
+                        var tofu = hash('\u0378');
+                        unsupported = target === tofu;
+                    }
+                } catch (e) {
+                    unsupported = true;
+                }
+            }
+
+            if (unsupported) {
+                document.documentElement.classList.add('symbol-fallback-active');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260403b">
+    <script type="module" src="assets/js/symbol-fallback.js?v=20260403b"></script>
     <style>
         .legal-content {
             padding: 120px 24px 80px;

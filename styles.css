@@ -1517,6 +1517,15 @@ img {
   color: #ffffff;
 }
 
+/* Hide decorative symbol glyphs when runtime detection marks them unsupported. */
+.symbol-fallback-active .marquee-dot,
+.symbol-fallback-active .discover-accent,
+.symbol-fallback-active .feature-card-dot,
+.symbol-fallback-active .dl-cta-icon,
+.symbol-fallback-active .footer-accent {
+  display: none !important;
+}
+
 /* RIGHT column — link table, top-aligned */
 .footer-right {
   display: flex;

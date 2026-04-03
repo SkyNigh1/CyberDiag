@@ -7,7 +7,57 @@
   <title>CyberDiag — Audit de sécurité système & réseaux Linux</title>
   <meta name="description"
     content="CyberDiag réalise des audits de sécurité système et réseaux Linux pour les entreprises. Développé par l'équipe Dyvine, étudiants en informatique à l'UBS.">
-  <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPhone|iPad|iPod/.test(ua) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      var unsupported = isIOS;
+
+      if (!unsupported) {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = 64;
+          canvas.height = 64;
+          var ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            unsupported = true;
+          } else {
+            ctx.textBaseline = 'top';
+            ctx.font = '48px "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols 2", sans-serif';
+
+            var hash = function (glyph) {
+              ctx.clearRect(0, 0, 64, 64);
+              ctx.fillStyle = '#000';
+              ctx.fillText(glyph, 4, 4);
+              var data = ctx.getImageData(0, 0, 64, 64).data;
+              var acc = 2166136261;
+
+              for (var i = 3; i < data.length; i += 4) {
+                acc ^= data[i];
+                acc = Math.imul(acc, 16777619);
+              }
+
+              return acc >>> 0;
+            };
+
+            var target = hash('\uD83D\uDFBC');
+            var tofu = hash('\u0378');
+            unsupported = target === tofu;
+          }
+        } catch (e) {
+          unsupported = true;
+        }
+      }
+
+      if (unsupported) {
+        document.documentElement.classList.add('symbol-fallback-active');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=20260403b">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
   <link rel="preload" as="image" href="assets/header background.avif" fetchpriority="high">
@@ -15,7 +65,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/main.js?v=20260403b"></script>
 </head>
 
 <body>

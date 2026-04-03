@@ -3,6 +3,12 @@ const SYMBOL_SELECTORS = '.marquee-dot, .discover-accent, .feature-card-dot, .dl
 
 let symbolSupportCache;
 
+function isIOSDevice() {
+  const ua = navigator.userAgent || '';
+  return /iPhone|iPad|iPod/.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 function getGlyphHash(ctx, glyph) {
   ctx.clearRect(0, 0, 96, 96);
   ctx.fillStyle = '#000';
@@ -20,18 +26,22 @@ function getGlyphHash(ctx, glyph) {
 }
 
 function detectPrimarySymbolSupport() {
+  // iOS Safari frequently renders this symbol as tofu despite normal font fallback.
+  if (isIOSDevice()) return false;
+
   const canvas = document.createElement('canvas');
   canvas.width = 96;
   canvas.height = 96;
 
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  if (!ctx) return true;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true }) || canvas.getContext('2d');
+  if (!ctx) return false;
 
   ctx.textBaseline = 'top';
   ctx.font = '72px "Neue Montreal", "Supply Mono", "Segoe UI Symbol", "Noto Sans Symbols 2", "Apple Symbols", sans-serif';
 
   const targetHash = getGlyphHash(ctx, PRIMARY_SYMBOL);
-  const fallbackGlyphs = ['\uFFFD', '\u25A1', '?', ' '];
+  // Include known fallback glyphs + definitely unassigned probes.
+  const fallbackGlyphs = ['\uFFFD', '\u25A1', '?', ' ', '\u0378', '\uFFFF'];
   const fallbackHashes = new Set(fallbackGlyphs.map((glyph) => getGlyphHash(ctx, glyph)));
 
   return !fallbackHashes.has(targetHash);
@@ -45,24 +55,10 @@ export function isPrimarySymbolSupported() {
   return symbolSupportCache;
 }
 
-function removeTextNodeSymbols(rootElement) {
-  const walker = document.createTreeWalker(rootElement, NodeFilter.SHOW_TEXT);
-  let currentNode = walker.nextNode();
-
-  while (currentNode) {
-    if (currentNode.nodeValue && currentNode.nodeValue.includes(PRIMARY_SYMBOL)) {
-      currentNode.nodeValue = currentNode.nodeValue.split(PRIMARY_SYMBOL).join('');
-    }
-    currentNode = walker.nextNode();
-  }
-}
-
 export function applySymbolFallback(root = document) {
   if (isPrimarySymbolSupported()) return;
 
   root.querySelectorAll(SYMBOL_SELECTORS).forEach((element) => {
-    removeTextNodeSymbols(element);
-    element.style.display = 'none';
     element.setAttribute('aria-hidden', 'true');
   });
 
