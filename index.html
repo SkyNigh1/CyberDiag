@@ -8,11 +8,14 @@
   <meta name="description"
     content="CyberDiag réalise des audits de sécurité système et réseaux Linux pour les entreprises. Développé par l'équipe Dyvine, étudiants en informatique à l'UBS.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="preload" as="image" href="assets/header background.avif" fetchpriority="high">
   <!-- GSAP + Lenis via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js" defer></script>
-  <script src="main.js" defer></script>
+  <script type="module" src="assets/js/main.js"></script>
 </head>
 
 <body>
@@ -48,7 +51,8 @@
 
         <!-- 3D Logo inside the frame, overflows bottom freely -->
         <div class="hero-logo-wrapper">
-          <img src="assets/logo/3dlogo.avif" alt="CyberDiag 3D Logo" class="hero-3d-logo">
+          <img src="assets/logo/3dlogo.avif" alt="CyberDiag 3D Logo" class="hero-3d-logo" fetchpriority="high"
+            decoding="async">
         </div>
 
         <!-- Text content on the left -->
@@ -79,7 +83,7 @@
 
         <!-- Bottom-right: UBS logo -->
         <div class="hero-year">
-          <img src="assets/logo/logo ubs.png" alt="UBS" class="hero-ubs-logo">
+          <img src="assets/logo/logo ubs.png" alt="UBS" class="hero-ubs-logo" decoding="async">
         </div>
       </div>
     </section>
@@ -113,7 +117,8 @@
       <div class="discover-grid">
         <!-- Left column — 2/3 width, video + dim/grain + overlay -->
         <div class="discover-left">
-          <video class="discover-video" src="assets/video/mockup.mp4" autoplay loop muted playsinline></video>
+          <video class="discover-video" src="assets/video/mockup.mp4" autoplay loop muted playsinline
+            preload="metadata"></video>
           <div class="video-dim"></div>
           <div class="video-grain-layer"></div>
           <div class="discover-overlay">
@@ -137,7 +142,7 @@
             </div>
             <div class="window-body">
               <iframe class="discover-animation" src="assets/video/animation.html" frameborder="0"
-                allowtransparency="true"></iframe>
+                allowtransparency="true" loading="lazy"></iframe>
             </div>
           </div>
         </div>
@@ -169,7 +174,8 @@
             <p class="feature-card-desc">Des modules séparés pour les analyses système et réseau, adaptés à chaque
               profil.</p>
             <div class="feature-card-img-wrap">
-              <img src="assets/screens/home.png" alt="Interface" class="feature-card-img">
+              <img src="assets/screens/home.png" alt="Interface" class="feature-card-img" loading="lazy"
+                decoding="async">
             </div>
           </div>
           <div class="feature-card" data-index="1" data-i18n-title="feature_2_title" data-i18n-desc="feature_2_desc">
@@ -178,7 +184,8 @@
             <h3 class="feature-card-title">Historique</h3>
             <p class="feature-card-desc">Retrouvez l'historique complet de vos analyses passées en un coup d'œil.</p>
             <div class="feature-card-img-wrap">
-              <img src="assets/screens/history.png" alt="Historique" class="feature-card-img">
+              <img src="assets/screens/history.png" alt="Historique" class="feature-card-img" loading="lazy"
+                decoding="async">
             </div>
           </div>
           <div class="feature-card" data-index="2" data-i18n-title="feature_3_title" data-i18n-desc="feature_3_desc">
@@ -188,7 +195,8 @@
             <p class="feature-card-desc">Des résultats détaillés et exportables en HTML pour partager vos audits
               facilement.</p>
             <div class="feature-card-img-wrap">
-              <img src="assets/screens/results.png" alt="Résultats" class="feature-card-img">
+              <img src="assets/screens/results.png" alt="Résultats" class="feature-card-img" loading="lazy"
+                decoding="async">
             </div>
           </div>
           <div class="feature-card" data-index="3" data-i18n-title="feature_4_title" data-i18n-desc="feature_4_desc">
@@ -198,7 +206,8 @@
             <p class="feature-card-desc">Un questionnaire pour adapter le niveau des résultats et obtenir un profil
               personnalisé.</p>
             <div class="feature-card-img-wrap">
-              <img src="assets/screens/questions.png" alt="Questionnaire" class="feature-card-img">
+              <img src="assets/screens/questions.png" alt="Questionnaire" class="feature-card-img" loading="lazy"
+                decoding="async">
             </div>
           </div>
           <div class="feature-card" data-index="4" data-i18n-title="feature_5_title" data-i18n-desc="feature_5_desc">
@@ -208,7 +217,8 @@
             <p class="feature-card-desc">Différents niveaux de scans pour être toujours au même niveau que
               l'utilisateur.</p>
             <div class="feature-card-img-wrap">
-              <img src="assets/screens/level.png" alt="Niveaux" class="feature-card-img">
+              <img src="assets/screens/level.png" alt="Niveaux" class="feature-card-img" loading="lazy"
+                decoding="async">
             </div>
           </div>
         </div>
@@ -303,7 +313,8 @@
           <!-- RIGHT 1/3 — image -->
           <div class="dl-right">
             <div class="dl-subframe dl-img-box">
-              <img src="assets/Mockup/main.avif" alt="CyberDiag Preview" class="dl-hero-img">
+              <img src="assets/Mockup/main.avif" alt="CyberDiag Preview" class="dl-hero-img" loading="lazy"
+                decoding="async">
             </div>
           </div>
 
@@ -318,48 +329,49 @@
             <!-- VS Code -->
             <div class="dl-tool-item">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
-                alt="VS Code">
+                alt="VS Code" loading="lazy" decoding="async">
             </div>
             <!-- GitLab -->
             <div class="dl-tool-item">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg"
-                alt="GitLab">
+                alt="GitLab" loading="lazy" decoding="async">
             </div>
             <!-- GitHub -->
             <div class="dl-tool-item">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
-                alt="GitHub" class="dl-tool-invert">
+                alt="GitHub" class="dl-tool-invert" loading="lazy" decoding="async">
             </div>
             <!-- Notion -->
             <div class="dl-tool-item">
               <img
                 src="https://cdn.brandfetch.io/idPYUoikV7/theme/light/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1714126994867"
-                alt="Notion">
+                alt="Notion" loading="lazy" decoding="async">
             </div>
             <!-- Claude -->
             <div class="dl-tool-item">
-              <img src="https://cdn.simpleicons.org/anthropic/white" alt="Claude" class="dl-tool-icon-small">
+              <img src="https://cdn.simpleicons.org/anthropic/white" alt="Claude" class="dl-tool-icon-small"
+                loading="lazy" decoding="async">
             </div>
             <!-- Photoshop -->
             <div class="dl-tool-item">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg"
-                alt="Photoshop">
+                alt="Photoshop" loading="lazy" decoding="async">
             </div>
             <!-- Blender -->
             <div class="dl-tool-item">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg"
-                alt="Blender">
+                alt="Blender" loading="lazy" decoding="async">
             </div>
             <!-- Three.js -->
             <div class="dl-tool-item">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threejs/threejs-original.svg"
-                alt="Three.js" class="dl-tool-invert">
+                alt="Three.js" class="dl-tool-invert" loading="lazy" decoding="async">
             </div>
             <!-- GSAP -->
             <div class="dl-tool-item">
               <img
                 src="https://cdn.brandfetch.io/idQQUeYvzS/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1765248028331"
-                alt="GSAP" class="dl-tool-rounded">
+                alt="GSAP" class="dl-tool-rounded" loading="lazy" decoding="async">
             </div>
             <!-- Lynis -->
             <div class="dl-tool-item">
@@ -367,13 +379,14 @@
             </div>
             <!-- Lenis -->
             <div class="dl-tool-item">
-              <img src="assets/logo/lenis.webp" alt="Lenis" class="dl-tool-rounded">
+              <img src="assets/logo/lenis.webp" alt="Lenis" class="dl-tool-rounded" loading="lazy"
+                decoding="async">
             </div>
             <!-- Nmap -->
             <div class="dl-tool-item">
               <img
                 src="https://imgs.search.brave.com/PfMmlMDZE3UtNB-6h7D-7DqTdUbLfJEmvvr16bI3f_4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zZWVs/YS5pby93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMi8xMS9ubWFw/LWxvZ28tMjU2eDI1/Ni0xLnBuZw"
-                alt="Nmap" class="dl-tool-rounded">
+                alt="Nmap" class="dl-tool-rounded" loading="lazy" decoding="async">
             </div>
           </div>
         </div>
@@ -420,7 +433,7 @@
         <div class="footer-left">
           <div class="footer-top-left">
             <p class="footer-studio" data-i18n="footer_studio">Équipe Dyvine&nbsp;Créations.</p>
-            <img src="assets/logo/logo ubs.png" alt="UBS" class="footer-ubs">
+            <img src="assets/logo/logo ubs.png" alt="UBS" class="footer-ubs" loading="lazy" decoding="async">
             <p class="footer-location" data-i18n="footer_location">( Vannes — France )</p>
           </div>
           <div class="footer-bottom-left">
@@ -458,7 +471,8 @@
           </div>
           <!-- CTA card -->
           <div class="footer-cta">
-            <img src="assets/logo/logo.png" alt="CyberDiag" class="footer-cta-logo">
+            <img src="assets/logo/logo.png" alt="CyberDiag" class="footer-cta-logo" loading="lazy"
+              decoding="async">
             <p class="footer-cta-text" data-i18n="footer_cta_text">Votre infrastructure Linux mérite un
               audit.<br>Simple, rapide, accessible à
               tous.<br>Téléchargez CyberDiag maintenant.</p>
